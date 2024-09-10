@@ -1,5 +1,5 @@
 import { firebaseConfig } from './config.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth.js";
 
 const app = initializeApp(firebaseConfig);
 
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const auth = getAuth();
         const provider = new GoogleAuthProvider();
 
-        signInWithPopup(auth, provider)
+        signInWithPopup(provider)
             .then((result) => {
                 const user = result.user;
                 console.log("Usuário logado:", user);
