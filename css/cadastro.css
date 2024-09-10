@@ -1,0 +1,12 @@
+body {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-cadastro {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+}
