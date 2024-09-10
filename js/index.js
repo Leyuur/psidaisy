@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then((result) => {
                 const user = result.user;
                 console.log("Usuário logado:", user);
+                alert("Oi, " + user.displayName)
             })
             .catch((error) => {
                 console.error("Erro ao fazer login com o Google:", error);
