@@ -1,7 +1,7 @@
-import { firebaseConfig } from './config.js';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from ".../firebase/auth";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-analytics.js";
+import { firebaseConfig } from ' ./config.js ';
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
