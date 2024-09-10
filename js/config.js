@@ -1,4 +1,4 @@
-// Configuração FireBase 
+// Configuração FireBase
 export const firebaseConfig = {
   apiKey: "AIzaSyCShoaRUFe6sA4zga76Ev02rqhQGD5Pxzk",
   authDomain: "psi-daisy.firebaseapp.com",
