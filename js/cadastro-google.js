@@ -1,4 +1,7 @@
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+import { firebaseConfig } from 'https://leyuur.github.io/psidaisy/js/config.js';
+
+const app = initializeApp(firebaseConfig);
 
 const db = getFirestore();
 
@@ -6,8 +9,7 @@ const user = JSON.parse(localStorage.getItem('user'));
     
 document.getElementById("form-h1").innerText = "Olá, " + user.displayName + "! Vamos finalizar seu cadastro";
 
-document.getElementById("btn-finalizar").addEventListener("click", (e) => {
-    e.preventDefault();
+document.getElementById("btn-finalizar").addEventListener("click", () => {
 
     // Função para adicionar um novo usuário
     async function adicionarUsuario() {
