@@ -4,7 +4,7 @@ import { firebaseConfig } from 'https://leyuur.github.io/psidaisy/js/config.js';
 
 const app = initializeApp(firebaseConfig);
 
-const db = getFirestore();
+const db = getFirestore(app);
 
 const user = JSON.parse(localStorage.getItem('user'));
     
