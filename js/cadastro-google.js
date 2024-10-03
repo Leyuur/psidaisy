@@ -1,11 +1,12 @@
-import { getFirestore, collection, addDoc } from "firebase/firestore"; 
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
 const db = getFirestore();
 
 const user = JSON.parse(localStorage.getItem('user'));
 
 document.addEventListener("DOMContentLoaded", () => {
     
-    document.querySelector("#form-h1").innerText = "Olá, " + user.displayName + "! Vamos finalizar seu cadastro";
+    document.getElementById("form-h1").innerText = "Olá, " + user.displayName + "! Vamos finalizar seu cadastro";
 
     document.getElementById("btn-finalizar").addEventListener("click", (e) => {
         e.preventDefault();
