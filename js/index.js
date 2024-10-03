@@ -24,43 +24,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
     // Login padrão (email/senha) 
-    document.querySelector(".form-login").addEventListener("submit", function(event) {
+    document.getElementById("btn-entrar").addEventListener("click", function(event) {
         event.preventDefault();
     
         let userEmail = document.getElementById("email").value;
         let userSenha = document.getElementById("senha").value;
     
 
-        signInWithEmailAndPassword(userEmail, userSenha)
+        signInWithEmailAndPassword(auth, userEmail, userSenha)
             .then((userCredential) => {
                 const user = userCredential.user;
                 console.log("Usuário logado:", user);
-                alert("Bem-vindo, " + user.userEmail);
-                // window.location.href = "./menu-principal.html";
+
+                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem("logado", "sim");
+
+                if(userEmail === localStorage.getItem("adm")) window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
+                else window.location.href = "https://leyuur.github.io/psidaisy/menu-principal.html";
             })
             .catch((error) => {
                 const errorMessage = error.message;
                 console.error("Erro ao fazer login:", errorMessage);
+                Toastify({
+                    text: "Email ou senha inválida",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "center", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                      background: "red",
+                    },
+                    onClick: function(){} // Callback after click
+                  }).showToast();
+
+                  
             });
     });
-
 
     // Login com o google 
     let googleBtn = document.getElementById("google-btn");
     googleBtn.addEventListener('click', () => {
-        
+
         const provider = new GoogleAuthProvider();
 
         signInWithPopup(auth, provider)
             .then((result) => {
                 const user = result.user;
-                console.log("Usuário logado:", user);
-                alert("Oi, " + user.displayName)
+                console.log("Usuário logado:", user);   
+
+                localStorage.setItem('user', JSON.stringify(user));
+                localStorage.setItem("logado", "sim");
+
+                if(user.email === localStorage.getItem("adm")) window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
+                else window.location.href = "https://leyuur.github.io/psidaisy/cadastro-google.html";
             })
             .catch((error) => {
-                console.error("Erro ao fazer login com o Google:", error);
+                const errorMessage = error.message;
+                console.error("Erro ao fazer login:", errorMessage);
+                Toastify({
+                    text: "Algo deu errado. Tente novamente",
+                    duration: 3000,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "center", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                      background: "red",
+                    },
+                    onClick: function(){} // Callback after click
+                  }).showToast();
             });
 
     })
 })
 
+
+// JSON.parse(localStorage.getItem('user')) 
