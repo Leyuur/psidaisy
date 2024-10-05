@@ -5,6 +5,7 @@ import { firebaseConfig } from 'https://leyuur.github.io/psidaisy/js/config.js';
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Criptografar senha 
 async function hashSenha(senha) {
     const encoder = new TextEncoder();
     const data = encoder.encode(senha);
@@ -12,8 +13,27 @@ async function hashSenha(senha) {
     return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// Mascara de data 
 document.addEventListener("DOMContentLoaded", () => {
-    const mascaraTelefone = (event) => {
+    document.getElementById("data-nasc").addEventListener("input", function (event) {
+        let input = event.target.value.replace(/\D/g, '');
+        let formatado = '';
+    
+        if (input.length > 2) {
+            formatado += input.substring(0, 2) + '/';
+            input = input.substring(2);
+        }
+        if (input.length > 2) {
+            formatado += input.substring(0, 2) + '/'; 
+            input = input.substring(2);
+        }
+        formatado += input;
+
+        event.target.value = formatado;
+    });
+
+    // Mascara de telefone 
+    document.getElementById("tel").addEventListener("input", (event) => {
         let input = event.target;
         let telefone = input.value.replace(/\D/g, '');
     
@@ -28,10 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     
         input.value = telefone;
-    }
-    
-    document.getElementById("tel").addEventListener("input", (event) => {
-        mascaraTelefone(event);
     });
     
     document.getElementById("btn-cadastrar").addEventListener("click", (event) => {
