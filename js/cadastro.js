@@ -1,10 +1,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { firebaseConfig } from 'https://leyuur.github.io/psidaisy/js/config.js';
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
+
+async function hashSenha(senha) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(senha);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const mascaraTelefone = (event) => {
@@ -24,84 +30,85 @@ document.addEventListener("DOMContentLoaded", () => {
         input.value = telefone;
     }
     
-    document.getElementById("tel").addEventListener("input", () => {
-        mascaraTelefone(event)
-    })
+    document.getElementById("tel").addEventListener("input", (event) => {
+        mascaraTelefone(event);
+    });
     
-    document.getElementById("btn-cadastrar").addEventListener("click", () => {
-    
-        // Função para adicionar um novo usuário
-        async function adicionarUsuario() {
-        try {
-            const docRef = await addDoc(collection(db, "usuarios"), {
-            data_nasc: document.getElementById("data-nasc").value,
-            email: document.getElementById("email").value,
-            endereco: document.getElementById("endereco").value,
-            nome: document.getElementById("nome").value,
-            tel: document.getElementById("tel").value,
-            senha: document.getElementById("senha").value
-            });
-            console.log("Documento adicionado: ", docRef);
-            localStorage.setItem("logado", "sim");
-    
-            Toastify({
-                text: "Usuário criado com sucesso!",
-                duration: 3000,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "center", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                    background: "green",
-                },
-                onClick: function(){} // Callback after click
-                }).showToast();
-            
-                setTimeout(() => {
-                    window.location.href = "https://leyuur.github.io/psidaisy/index.html";
-                }, 3000);
-    
-        } catch (e) {
-            console.error("Erro ao adicionar documento: ", e);
-            Toastify({
-                text: "Algo deu errado. Tente novamente",
-                duration: 3000,
-                close: true,
-                gravity: "top", // `top` or `bottom`
-                position: "center", // `left`, `center` or `right`
-                stopOnFocus: true, // Prevents dismissing of toast on hover
-                style: {
-                    background: "red",
-                },
-                onClick: function(){} // Callback after click
-                }).showToast();
+    document.getElementById("btn-cadastrar").addEventListener("click", (event) => {
+
+        let data_nasc = document.getElementById("data-nasc").value;
+        let email = document.getElementById("email").value;
+        let endereco = document.getElementById("endereco").value;
+        let nome = document.getElementById("nome").value;
+        let tel = document.getElementById("tel").value;
+        let senha = document.getElementById("senha").value;
+        let confirm_senha = document.getElementById("confirm-senha").value;
+
+        if (data_nasc === "" || email === "" || endereco === "" || nome === "" || tel === "" || senha === "" || confirm_senha === "") {
+            mostrarToast("Todos os campos devem ser preenchidos", "red");
+            return false;
+        } else if (senha.trim() !== confirm_senha.trim()) {
+            document.getElementById("senha").style.border = "1px solid red";
+            document.getElementById("confirm-senha").style.border = "1px solid red";
+            document.getElementById("senha").focus();
+            mostrarToast("As senhas devem ser iguais", "red");
+            return false;
+        } else {
+            verificarEmail(email, data_nasc, endereco, nome, tel, senha);
         }
-        }
+    });
+});
+
+async function verificarEmail(email, data_nasc, endereco, nome, tel, senha) {
+    const q = query(collection(db, "usuarios"), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
     
-    if (document.getElementById("senha").value != document.getElementById("confirm-senha").value){
-        document.getElementById("senha").style.border = "1px solid red";
-        document.getElementById("confirm-senha").style.border = "1px solid red";
-        document.getElementById("senha").focus();
-        Toastify({
-            text: "As senhas devem ser iguais",
-            duration: 3000,
-            close: true,
-            gravity: "top", // `top` or `bottom`
-            position: "center", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
-            style: {
-                background: "red",
-            },
-            onClick: function(){} // Callback after click
-            }).showToast();
+    if (!querySnapshot.empty) {
+        document.getElementById("email").style.border = "1px solid red";
+        document.getElementById("email").focus();
+        mostrarToast("E-mail já cadastrado. Tente outro", "red");
+        return false;
     } else {
-        adicionarUsuario();
+        adicionarUsuario(data_nasc, email, endereco, nome, tel, senha);
     }
+}
+
+async function adicionarUsuario(data_nasc, email, endereco, nome, tel, senha) {
+    try {
+        const senhaCrypto= await hashSenha(senha)
+        const docRef = await addDoc(collection(db, "usuarios"), {
+            data_nasc: data_nasc,
+            email: email,
+            endereco: endereco,
+            nome: nome,
+            tel: tel,
+            senha: senhaCrypto
+        });
+        console.log("Documento adicionado: ", docRef);
+        localStorage.setItem("logado", "sim");
+
+        mostrarToast("Usuário criado com sucesso!", "green");
         
-    })
-})
+        setTimeout(() => {
+            window.location.href = "/index.html";
+        }, 2000);
+    } catch (e) {
+        console.error("Erro ao adicionar documento: ", e);
+        mostrarToast("Algo deu errado. Tente novamente", "red");
+    }
+}
 
-
-
-
-
+function mostrarToast(mensagem, cor) {
+    Toastify({
+        text: mensagem,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+        style: {
+            background: cor,
+        },
+        onClick: function(){} 
+    }).showToast();
+}
