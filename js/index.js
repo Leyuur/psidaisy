@@ -74,9 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("Usuário logado:", user);   
 
                 localStorage.setItem('user', JSON.stringify(user));
-                localStorage.setItem("logado", "sim");
 
-                if(user.email === localStorage.getItem("adm")) window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
+                if(user.email === localStorage.getItem("adm")) {
+                    window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
+                    localStorage.setItem("logado", "sim");
+                }
                 else window.location.href = "https://leyuur.github.io/psidaisy/cadastro-google.html";
             })
             .catch((error) => {

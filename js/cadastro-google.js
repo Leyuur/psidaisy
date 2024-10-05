@@ -23,7 +23,9 @@ document.getElementById("btn-finalizar").addEventListener("click", () => {
         tel: document.getElementById("tel").value
         });
         console.log("Documento adicionado: ", docRef);
-        alert("Deu certo!");
+        localStorage.setItem("logado", "sim");
+
+        window.location.href = "https://leyuur.github.io/psidaisy/menu-principal.html";
     } catch (e) {
         console.error("Erro ao adicionar documento: ", e);
         Toastify({
