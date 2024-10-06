@@ -8,18 +8,18 @@ const db = getFirestore(app);
 
 const user = JSON.parse(localStorage.getItem('user'));
 
-async function verificarUser(email) {
+ function verificarUser(email) {
     const q = query(collection(db, "usuarios"), where("email", "==", email));
-    const result = await getDocs(q);
+    const result = getDocs(q);
 
     if (!result.empty) {
         if(email === localStorage.getItem("adm")) console.log("é adm")
             // window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
-        else console.log("não é adm")
+        else console.log("não é adm mas tem login")
         // window.location.href = "https://leyuur.github.io/psidaisy/menu-principal.html";
     }
 }
-
+console.log(user.email);
 verificarUser(user.email);
 
 document.getElementById("form-h1").innerText = "Olá, " + user.displayName + "! Vamos finalizar seu cadastro";
