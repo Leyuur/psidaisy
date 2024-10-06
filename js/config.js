@@ -9,6 +9,7 @@ export const firebaseConfig = {
   measurementId: "G-TE7DB8GN94"
 }
 
+// Toaster de mensagens 
 export const mostrarToast = (mensagem, cor) => {
   Toastify({
       text: mensagem,

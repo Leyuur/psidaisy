@@ -1,11 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { GoogleAuthProvider, getAuth, signInWithPopup, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-analytics.js";
-import { firebaseConfig } from 'https://leyuur.github.io/psidaisy/js/config.js';
+import { firebaseConfig, mostrarToast } from 'https://leyuur.github.io/psidaisy/js/config.js';
 
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const auth = getAuth(app);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -39,26 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem("logado", "sim");
 
-                if(userEmail === localStorage.getItem("adm")) window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
-                else window.location.href = "https://leyuur.github.io/psidaisy/menu-principal.html";
+                // if(userEmail === localStorage.getItem("adm")) window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
+                // else window.location.href = "https://leyuur.github.io/psidaisy/menu-principal.html";
             })
             .catch((error) => {
                 const errorMessage = error.message;
                 console.error("Erro ao fazer login:", errorMessage);
-                Toastify({
-                    text: "Email ou senha inválida",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top", // `top` or `bottom`
-                    position: "center", // `left`, `center` or `right`
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                      background: "red",
-                    },
-                    onClick: function(){} // Callback after click
-                  }).showToast();
-
-                  
+                mostrarToast("Email ou senha inválida", "red")   
             });
     });
 
@@ -84,18 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch((error) => {
                 const errorMessage = error.message;
                 console.error("Erro ao fazer login:", errorMessage);
-                Toastify({
-                    text: "Algo deu errado. Tente novamente",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top", // `top` or `bottom`
-                    position: "center", // `left`, `center` or `right`
-                    stopOnFocus: true, // Prevents dismissing of toast on hover
-                    style: {
-                      background: "red",
-                    },
-                    onClick: function(){} // Callback after click
-                  }).showToast();
+                mostrarToast("Algo deu errado. Tente novamente", "red")
             });
 
     })
