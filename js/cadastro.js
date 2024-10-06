@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-import { firebaseConfig } from 'https://leyuur.github.io/psidaisy/js/config.js';
+import { firebaseConfig, mostrarToast } from 'https://leyuur.github.io/psidaisy/js/config.js';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return false;
         } else {
             verificarEmail(email, data_nasc, endereco, nome, tel, senha);
+            document.getElementById("btn-cadastrar").disabled = true;
         }
     });
 });
@@ -112,19 +113,4 @@ async function adicionarUsuario(data_nasc, email, endereco, nome, tel, senha) {
         console.error("Erro ao adicionar documento: ", e);
         mostrarToast("Algo deu errado. Tente novamente", "red");
     }
-}
-
-function mostrarToast(mensagem, cor) {
-    Toastify({
-        text: mensagem,
-        duration: 3000,
-        close: true,
-        gravity: "top",
-        position: "center",
-        stopOnFocus: true,
-        style: {
-            background: cor,
-        },
-        onClick: function(){} 
-    }).showToast();
 }
