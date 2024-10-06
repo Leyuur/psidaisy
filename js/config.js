@@ -24,3 +24,42 @@ export const mostrarToast = (mensagem, cor) => {
       onClick: function(){} 
   }).showToast();
 }
+
+export const mascaraTel = (campoTel) => {
+  // Máscara de telefone
+  campoTel.addEventListener("input", (event) => {
+    let input = event.target;
+    let telefone = input.value.replace(/\D/g, '');
+
+    if (telefone.length > 10) {
+        telefone = telefone.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+    } else if (telefone.length > 5) {
+        telefone = telefone.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+    } else if (telefone.length > 2) {
+        telefone = telefone.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+    } else {
+        telefone = telefone.replace(/^(\d*)/, '($1)');
+    }
+    input.value = telefone;
+});
+}
+
+export const mascaraData = (campoData) => {
+  // Máscara de data
+  campoData.addEventListener("input", function (event) {
+    let input = event.target.value.replace(/\D/g, '');
+    let formatado = '';
+
+    if (input.length > 2) {
+        formatado += input.substring(0, 2) + '/';
+        input = input.substring(2);
+    }
+    if (input.length > 2) {
+        formatado += input.substring(0, 2) + '/'; 
+        input = input.substring(2);
+    }
+    formatado += input;
+
+    event.target.value = formatado;
+});
+}

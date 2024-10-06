@@ -1,28 +1,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getFirestore, collection, addDoc, query, where, getDocs} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-import { firebaseConfig, mostrarToast} from 'https://leyuur.github.io/psidaisy/js/config.js';
+import { firebaseConfig, mostrarToast, mascaraData, mascaraTel} from 'https://leyuur.github.io/psidaisy/js/config.js';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
-     // Máscara de data
-     document.getElementById("data-nasc").addEventListener("input", function (event) {
-        let input = event.target.value.replace(/\D/g, '');
-        let formatado = '';
+    
+      // Máscara de data
+    mascaraData(document.getElementById("data-nasc"));
 
-        if (input.length > 2) {
-            formatado += input.substring(0, 2) + '/';
-            input = input.substring(2);
-        }
-        if (input.length > 2) {
-            formatado += input.substring(0, 2) + '/'; 
-            input = input.substring(2);
-        }
-        formatado += input;
-
-        event.target.value = formatado;
-    });
+    // Máscara de telefone
+    mascaraTel(document.getElementById("tel"));
 
     const user = JSON.parse(localStorage.getItem('user'));
 

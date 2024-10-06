@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
 import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-import { firebaseConfig, mostrarToast } from 'https://leyuur.github.io/psidaisy/js/config.js';
+import { firebaseConfig, mostrarToast, mascaraData, mascaraTel } from 'https://leyuur.github.io/psidaisy/js/config.js';
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -10,40 +10,10 @@ const auth = getAuth(app);
 
 document.addEventListener("DOMContentLoaded", () => {
     // Máscara de data
-    document.getElementById("data-nasc").addEventListener("input", function (event) {
-        let input = event.target.value.replace(/\D/g, '');
-        let formatado = '';
-
-        if (input.length > 2) {
-            formatado += input.substring(0, 2) + '/';
-            input = input.substring(2);
-        }
-        if (input.length > 2) {
-            formatado += input.substring(0, 2) + '/'; 
-            input = input.substring(2);
-        }
-        formatado += input;
-
-        event.target.value = formatado;
-    });
+    mascaraData(document.getElementById("data-nasc"));
 
     // Máscara de telefone
-    document.getElementById("tel").addEventListener("input", (event) => {
-        let input = event.target;
-        let telefone = input.value.replace(/\D/g, '');
-
-        if (telefone.length > 10) {
-            telefone = telefone.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
-        } else if (telefone.length > 5) {
-            telefone = telefone.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
-        } else if (telefone.length > 2) {
-            telefone = telefone.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
-        } else {
-            telefone = telefone.replace(/^(\d*)/, '($1)');
-        }
-
-        input.value = telefone;
-    });
+    mascaraTel(document.getElementById("tel"));
 
     // Evento para o botão cadastrar
     document.getElementById("btn-cadastrar").addEventListener("click", (event) => {
