@@ -8,9 +8,9 @@ const db = getFirestore(app);
 
 const user = JSON.parse(localStorage.getItem('user'));
 
- function verificarUser(email) {
+ async function verificarUser(email) {
     const q = query(collection(db, "usuarios"), where("email", "==", email));
-    const result = getDocs(q);
+    const result = await getDocs(q);
 
     if (!result.empty) {
         if(email === localStorage.getItem("adm")) console.log("é adm")
