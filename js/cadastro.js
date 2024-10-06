@@ -80,7 +80,7 @@ async function adicionarUsuario(data_nasc, email, endereco, nome, tel, senha) {
 
         localStorage.setItem("logado", "sim");
         mostrarToast("Usuário criado com sucesso!", "green");
-
+        document.getElementById("btn-cadastrar").disabled = false;
         // Redireciona o usuário após o cadastro
         setTimeout(() => {
             window.location.href = "/index.html";
@@ -88,7 +88,5 @@ async function adicionarUsuario(data_nasc, email, endereco, nome, tel, senha) {
     } catch (error) {
         console.error("Erro ao cadastrar usuário:", error);
         mostrarToast("Algo deu errado. Tente novamente", "red");
-    } finally {
-        document.getElementById("btn-cadastrar").disabled = false;
     }
 }

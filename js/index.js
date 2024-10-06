@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-        
     // Login padrão (email/senha) 
     document.getElementById("btn-entrar").addEventListener("click", function(event) {
         event.preventDefault();
