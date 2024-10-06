@@ -5,9 +5,10 @@ import { firebaseConfig, mostrarToast} from 'https://leyuur.github.io/psidaisy/j
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const user = JSON.parse(localStorage.getItem('user'));
-
 document.addEventListener("DOMContentLoaded", () => {
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    
     async function verificarUser(email) {
         const q = query(collection(db, "usuarios"), where("email", "==", email));
         const result = await getDocs(q);
