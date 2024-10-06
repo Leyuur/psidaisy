@@ -8,22 +8,26 @@ const db = getFirestore(app);
 document.addEventListener("DOMContentLoaded", () => {
 
     const user = JSON.parse(localStorage.getItem('user'));
-    
+
     async function verificarUser(email) {
-        const q = query(collection(db, "usuarios"), where("email", "==", email));
-        const result = await getDocs(q);
-    
-        if (!result.empty) {
-            if(email === localStorage.getItem("adm")) {
-                console.log("é adm")
-                // window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
+        try {
+            const q = query(collection(db, "usuarios"), where("email", "==", email));
+            const result = await getDocs(q);
+        
+            if (!result.empty) {
+                if(email === localStorage.getItem("adm")) {
+                    console.log("é adm")
+                    // window.location.href = "https://leyuur.github.io/psidaisy/menu-adm.html";
+                }
+                else {
+                    console.log("não é adm mas tem login") 
+                    // window.location.href = "https://leyuur.github.io/psidaisy/menu-principal.html";
+                } 
+            } else {
+                console.log("Usuário ainda não cadastrado")
             }
-            else {
-                console.log("não é adm mas tem login") 
-                // window.location.href = "https://leyuur.github.io/psidaisy/menu-principal.html";
-            } 
-        } else {
-            console.log("Usuário ainda não cadastrado")
+        } catch (error) {
+            console.error("Erro ao verificar usuário:", error);
         }
     }
     console.log(user.email);
