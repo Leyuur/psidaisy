@@ -7,8 +7,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Máscara de data
+
 document.addEventListener("DOMContentLoaded", () => {
+    // Máscara de data
     document.getElementById("data-nasc").addEventListener("input", function (event) {
         let input = event.target.value.replace(/\D/g, '');
         let formatado = '';

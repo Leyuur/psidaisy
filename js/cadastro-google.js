@@ -6,6 +6,23 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 document.addEventListener("DOMContentLoaded", () => {
+     // Máscara de data
+     document.getElementById("data-nasc").addEventListener("input", function (event) {
+        let input = event.target.value.replace(/\D/g, '');
+        let formatado = '';
+
+        if (input.length > 2) {
+            formatado += input.substring(0, 2) + '/';
+            input = input.substring(2);
+        }
+        if (input.length > 2) {
+            formatado += input.substring(0, 2) + '/'; 
+            input = input.substring(2);
+        }
+        formatado += input;
+
+        event.target.value = formatado;
+    });
 
     const user = JSON.parse(localStorage.getItem('user'));
 
